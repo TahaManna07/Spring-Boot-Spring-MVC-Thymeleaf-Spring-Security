@@ -29,7 +29,7 @@
                 </button>
             </form>
             <div class="card-body">
-                <form method="get" th:action="@{index}">
+                <form method="get" th:action="@{/user/index}">
                     <label>Keyword : </label>
                     <input   type="text" name="keyword" th:value="${keyword}">
                     <button type="submit" class="btn btn-info">
@@ -47,15 +47,15 @@
                         <td th:text="${p.dateNaissance}"></td>
                         <td th:text="${p.malade}"></td>
                         <td th:text="${p.score}"></td>
-                        <td>
-                            <a onclick="return confirm('sure?')" th:href="@{delete(id=${p.id},
+                        <td th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+                            <a onclick="return confirm('sure?')" th:href="@{/admin/delete(id=${p.id},
                                                                     keyword=${keyword},page=${currentPage})}" class="btn btn-danger">
                                 <i class="bi bi-trash"></i>
                             </a>
                         </td>
-                        <td>
+                        <td th:if="${#authorization.expression('hasRole(''ADMIN'')')}" >
                             <a class="btn btn-success"
-                               th:href="@{/editPatient(id=${p.id})}">Edit</a>
+                               th:href="@{/admin/editPatient(id=${p.id})}">Edit</a>
                         </td>
 
 
@@ -66,7 +66,7 @@
                 </table>
                 <ul class="nav nav-pills">
                     <li th:each="value,item:${pages}">
-                        <a th:href="@{/index(page=${item.index},keyword=${keyword})}"
+                        <a th:href="@{/user/index(page=${item.index},keyword=${keyword})}"
                            th:class="${currentPage==item.index?'btn btn-info ms-1':'btn btn-outline-info ms-1'}"
                            th:text="${1+item.index}"></a>
                     </li>
